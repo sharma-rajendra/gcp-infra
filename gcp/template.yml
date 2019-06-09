@@ -1,0 +1,19 @@
+- name: Compute Engine Instance Template Examples
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+     - gce_vars/auth
+     - gce_vars/machines
+     - gce_vars/zone
+  tasks:
+    - name: create instance template
+      gce_instance_template:
+        name: my-test-instance-template
+        size: "{{ machine_type }}"
+        image_family: "{{ image_family }}"
+        state: present
+        project_id: "{{ project }}"
+        credentials_file: "{{ credentials_file }}"
+        service_account_email: "{{ service_account_email }}"
+        network: default
+        external_ip: null
