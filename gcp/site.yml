@@ -1,0 +1,3 @@
+---
+- import_playbook: template.yml
+- import_playbook: mig.yml

@@ -1,0 +1,32 @@
+- name: Managed Instance Group Example
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+     - gce_vars/auth
+     - gce_vars/machines
+     - gce_vars/zone
+  tasks:
+    - name: Create MIG with Autoscaler
+      gce_mig:
+        name: ansible-mig-example
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project }}"
+        service_account_email: "{{ service_account_email }}"
+        zone: us-central1-c
+        state: present
+        size: 3
+        template: my-test-instance-template
+        recreate_instances: yes
+        autoscaling:
+          enabled: yes
+          name: my-autoscaler
+          policy:
+            min_instances: 2
+            max_instances: 5
+            cool_down_period: 30
+            cpu_utilization:
+              target: .39
+            load_balancing_utilization:
+              target: 0.4
+
+
